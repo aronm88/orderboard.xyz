@@ -1,0 +1,50 @@
+erDiagram
+    user ||--|{ list : owns
+    list ||--o{ card : contains
+    card ||--o| card_deletion : has_deletion
+    card ||--o{ card_activity : records_activity
+    list ||--o{ card_activity : as_origin
+    list ||--o{ card_activity : as_destination
+
+    user {
+        uuid id PK
+        varchar email
+        varchar password_hash
+        timestamptz created_at
+    }
+
+    list {
+        uuid id PK
+        uuid user_id FK
+        varchar name
+        int position
+    }
+
+    card {
+        uuid id PK
+        uuid list_id FK
+        varchar product
+        varchar seller
+        numeric value
+        text comment
+        boolean checkbox
+        boolean active
+        date due_date
+        timestamptz created_at
+        timestamptz checked_at
+        timestamptz moved_to_returned_at
+    }
+
+    card_activity {
+        uuid id PK
+        uuid card_id FK
+        uuid from_list_id FK
+        uuid to_list_id FK
+        timestamptz moved_at
+    }
+
+    card_deletion {
+        uuid id PK
+        uuid card_id FK
+        timestamptz deleted_at
+    }
